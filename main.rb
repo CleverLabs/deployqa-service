@@ -1,3 +1,5 @@
+require "docker"
+
 application_name = ARGV[1]
 port = rand(81_000..90_000)
 
