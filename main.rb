@@ -1,7 +1,7 @@
 require "docker"
 
-application_name = ARGV[1]
-port = rand(81_000..90_000)
+application_name = ARGV[0]
+port = rand(31000..32000)
 
 
 KIND_CONFIG = %{
@@ -38,6 +38,7 @@ spec:
   containers:
   - name: %{application_name}
     image: %{image_name}
+    args: ["bundle", "exec", "rails", "s", "-p", "80", "-b", "0.0.0.0"]
     ports:
     - containerPort: 80
 ---
@@ -62,13 +63,12 @@ cluster_config_filename = "#{application_name}-cluster-config.yaml"
 docker_image_name = "some_repo_name:#{application_name}"
 File.open(cluster_config_filename, "w") { |file| file.write(KUBERNETES_CONFIG % { application_name: application_name, image_name: docker_image_name }) }
 
-puts " -- loading docker to kind"
-
-system("kind load docker-image #{docker_image_name}")
-
 puts " -- creating cluster"
-
 system("kind create cluster --config #{kind_config_filename} --name #{application_name}")
+
+puts " -- loading docker to kind"
+system("kind load docker-image #{docker_image_name} --name #{application_name}")
+
 kind_connection_config = `kind get kubeconfig-path --name=#{application_name}`
 
 
@@ -83,4 +83,4 @@ kind_connection_config = `kind get kubeconfig-path --name=#{application_name}`
 
 puts " -- applying kube config"
 
-`KUBECONFIG="#{kind_connection_config}" kubectl apply -f #{cluster_config_filename}`
+system({ "KUBECONFIG" => kind_connection_config.strip }, "kubectl apply -f #{cluster_config_filename}")
