@@ -12,10 +12,11 @@ get "/application/:application_name/status" do
 end
 
 post "/application/:application_name" do
-  ServerActionWorker.perform_async(params[:application_name])
+  ServerActionWorker.perform_async(ServerCreator, params[:application_name])
   "Ok"
 end
 
 delete "/application/:application_name" do
-  "Hello world!"
+  ServerActionWorker.perform_async(ServerDeletor, params[:application_name])
+  "Ok"
 end

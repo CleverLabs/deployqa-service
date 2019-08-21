@@ -23,9 +23,9 @@ nodes:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: %{application_name}
+  name: "%{application_name}"
   labels:
-    app: %{application_name}
+    app: "%{application_name}"
 spec:
   containers:
   - name: %{application_name}
@@ -37,11 +37,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: %{application_name}
+  name: "%{application_name}"
 spec:
   type: NodePort
   selector:
-    app: %{application_name}
+    app: "%{application_name}"
   ports:
   - protocol: TCP
     port: 80
