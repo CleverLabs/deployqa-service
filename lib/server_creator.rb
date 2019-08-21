@@ -14,7 +14,7 @@ nodes:
   extraPortMappings:
   - containerPort: 31000
     hostPort: %{host_port}
-    listenAddress: "127.0.0.1"
+    listenAddress: "0.0.0.0"
     protocol: tcp
 }
   KUBERNETES_CONFIG = %{
