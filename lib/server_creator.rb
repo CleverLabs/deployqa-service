@@ -4,6 +4,8 @@ require "docker"
 require_relative "./port"
 
 class ServerCreator
+  REPO_PATH = "/home/ubuntu/deployqa"
+  CONFIGURATIONS_PATH = "/home/ubuntu/service_configs"
   IMAGE_REPO_NAME = "deployqa_internal_project_instance"
   KIND_CONFIG = %{
 kind: Cluster
@@ -54,8 +56,7 @@ spec:
 
   def call
     kind_config_filename = create_kind_config
-    build_docker
-    docker_image_name = "#{IMAGE_REPO_NAME}:#{@application_name}"
+    docker_image_name = build_docker_image
     cluster_config_filename = craete_cluster_config(docker_image_name)
     setup_cluster(kind_config_filename, docker_image_name)
 
@@ -64,20 +65,21 @@ spec:
 
   def create_kind_config
     puts " -- creating kind_config"
-    kind_config_filename = "deployqa-internal-#{@application_name}-kind-config.yaml"
+    kind_config_filename = "#{CONFIGURATIONS_PATH}/deployqa-internal-#{@application_name}-kind-config.yaml"
     File.open(kind_config_filename, "w") { |file| file.write(KIND_CONFIG % { host_port: @port }) }
     kind_config_filename
   end
 
-  def build_docker
+  def build_docker_image
     puts " -- building docker"
-    image = Docker::Image.build_from_dir(".")
-    image.tag("repo" => "some_repo_name", "tag" => @application_name)
+    image = Docker::Image.build_from_dir(REPO_PATH)
+    image.tag("repo" => IMAGE_REPO_NAME, "tag" => @application_name)
+    "#{IMAGE_REPO_NAME}:#{@application_name}"
   end
 
   def craete_cluster_config(docker_image_name)
     puts " -- creating cluster_config"
-    cluster_config_filename = "deployqa-internal-#{@application_name}-cluster-config.yaml"
+    cluster_config_filename = "#{CONFIGURATIONS_PATH}/deployqa-internal-#{@application_name}-cluster-config.yaml"
     File.open(cluster_config_filename, "w") { |file| file.write(KUBERNETES_CONFIG % { application_name: @application_name, image_name: docker_image_name }) }
     cluster_config_filename
   end
