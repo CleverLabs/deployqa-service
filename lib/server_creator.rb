@@ -60,7 +60,7 @@ spec:
     cluster_config_filename = craete_cluster_config(docker_image_name)
     setup_cluster(kind_config_filename, docker_image_name)
 
-    apply_kubectl_config
+    apply_kubectl_config(cluster_config_filename)
   end
 
   def create_kind_config
