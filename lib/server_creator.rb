@@ -49,7 +49,7 @@ spec:
     nodePort: 31000
 }
 
-  def new(application_name)
+  def initialize(application_name)
     @application_name = application_name
     @port = Port.allocate
   end
