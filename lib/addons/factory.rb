@@ -5,7 +5,7 @@ require_relative "./postgresql"
 module Addons
   class Factory
     ADDONS_MAPPING = {
-      "postgresql" => Addons::Postresql
+      "postgresql" => Addons::Postgresql
     }.freeze
 
     def self.get(addon_name)

@@ -59,7 +59,7 @@ class Configurations
 
 
   DB_DEPLOYMENT_CONFIG = IceNine.deep_freeze({
-    "apiVersion" => "v1",
+    "apiVersion" => "apps/v1",
     "kind" => "Deployment",
     "metadata" => {
       "name" => "postgres",
@@ -80,20 +80,20 @@ class Configurations
             "app" => nil,
             "tier" => "database"
           }
+        },
+        "spec" => {
+          "containers" => [{
+            "name" => "postgres",
+            "image" => "postgres:9.6-alpine",
+            "env" => [
+              { "name" => "POSTGRES_USER", "value" => "user" },
+              { "name" => "POSTGRES_PASSWORD", "value" => "password" },
+              { "name" => "POSTGRES_DB", "value" => "deployqa" },
+              { "name" => "PGDATA", "value" => "/var/lib/postgresql/data" }
+            ],
+            "ports" => [{ "containerPort" => 5432 }]
+          }]
         }
-      },
-      "spec" => {
-        "containers" => [{
-          "name" => "postgres",
-          "image" => "postgres:9.6-alpine",
-          "env" => [
-            { "name" => "POSTGRES_USER", "value" => "user" },
-            { "name" => "POSTGRES_PASSWORD", "value" => "password" },
-            { "name" => "POSTGRES_DB", "value" => "deployqa" },
-            { "name" => "PGDATA", "value" => "/var/lib/postgresql/data" }
-          ],
-          "ports" => [{ "containerPort" => 5432 }]
-        }]
       }
     }
   })
@@ -117,7 +117,7 @@ class Configurations
 
   def kind_config(port:)
     config = Marshal.load(Marshal.dump(KIND_CONFIG))
-    config.fetch("nodes")[1].fetch("extraPortMappings")[0]["hostPort"] = port.to_s
+    config.fetch("nodes")[1].fetch("extraPortMappings")[0]["hostPort"] = port.to_i
     config.to_yaml
   end
 
