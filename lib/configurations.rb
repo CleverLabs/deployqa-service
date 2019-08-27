@@ -128,7 +128,12 @@ class Configurations
     config.fetch("spec").fetch("containers")[0]["name"] = application_name
     config.fetch("spec").fetch("containers")[0]["image"] = image
     config.fetch("spec").fetch("containers")[0]["args"] = "bundle exec rails s -p 80 -b 0.0.0.0".split
-    config.fetch("spec").fetch("containers")[0]["env"] = [{ "name" => "DB_HOST", "value" => "postgres" }, { "name" => "DB_NAME", "value" => "deployqa" }]
+    config.fetch("spec").fetch("containers")[0]["env"] = [
+      { "name" => "DB_HOST", "value" => "postgres" },
+      { "name" => "DB_NAME", "value" => "deployqa" },
+      { "name" => "DB_USERNAME", "value" => "user" },
+      { "name" => "DB_PASSWORD", "value" => "password" }
+    ]
     config.to_yaml
   end
 
