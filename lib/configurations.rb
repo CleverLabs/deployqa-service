@@ -96,7 +96,7 @@ class Configurations
         }]
       }
     }
-  }
+  })
 
   DB_SERVICE_CONFIG = IceNine.deep_freeze({
     "apiVersion" => "v1",
@@ -128,12 +128,12 @@ class Configurations
     config.fetch("spec").fetch("containers")[0]["name"] = application_name
     config.fetch("spec").fetch("containers")[0]["image"] = image
     config.fetch("spec").fetch("containers")[0]["args"] = "bundle exec rails s -p 80 -b 0.0.0.0".split
-    config.fetch("spec").fetch("containers")[0]["env"] = [{ name: "DB_HOST", value: "postgres" }, { name: "DB_NAME", value: "deployqa" }]
+    config.fetch("spec").fetch("containers")[0]["env"] = [{ "name" => "DB_HOST", "value" => "postgres" }, { "name" => "DB_NAME", "value" => "deployqa" }]
     config.to_yaml
   end
 
   def web_service_config(application_name:)
-    config = Marshal.load(Marshal.dump(WEB_DEPLOYMENT_CONFIG))
+    config = Marshal.load(Marshal.dump(WEB_SERVICE_CONFIG))
     config.fetch("metadata")["name"] = application_name
     config.fetch("spec").fetch("selector")["app"] = application_name
     config.to_yaml

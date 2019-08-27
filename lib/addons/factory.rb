@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "./postgresql"
+require_relative "./postgresql"
 
 module Addons
   class Factory

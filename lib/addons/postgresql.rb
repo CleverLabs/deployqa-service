@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Addons
-  class Postresql
+  class Postgresql
     def initialize(application_name)
       
     end
