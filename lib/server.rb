@@ -2,6 +2,7 @@
 
 require "sinatra"
 require_relative "./server_action_worker"
+require_relative "./addons/factory"
 
 set :environment, :production
 set :bind, "0.0.0.0"
@@ -19,4 +20,8 @@ end
 delete "/application/:application_name" do
   ServerActionWorker.perform_async(ServerDeletor, params[:application_name])
   "Ok"
+end
+
+post "/addons/:addon_name" do
+  
 end

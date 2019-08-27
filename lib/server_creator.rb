@@ -2,6 +2,7 @@
 
 require "docker"
 require_relative "./port"
+require_relative "./configurations"
 
 class ServerCreator
   REPO_PATH = "/home/ubuntu/deployqa"
@@ -66,7 +67,9 @@ spec:
   def create_kind_config
     puts " -- creating kind_config"
     kind_config_filename = "#{CONFIGURATIONS_PATH}/deployqa-internal-#{@application_name}-kind-config.yaml"
-    File.open(kind_config_filename, "w") { |file| file.write(KIND_CONFIG % { host_port: @port }) }
+    File.open(kind_config_filename, "w") do |file|
+      file.write(Configurations.new.kind_config(port: @port))
+    end
     kind_config_filename
   end
 
@@ -80,7 +83,13 @@ spec:
   def craete_cluster_config(docker_image_name)
     puts " -- creating cluster_config"
     cluster_config_filename = "#{CONFIGURATIONS_PATH}/deployqa-internal-#{@application_name}-cluster-config.yaml"
-    File.open(cluster_config_filename, "w") { |file| file.write(KUBERNETES_CONFIG % { application_name: @application_name, image_name: docker_image_name }) }
+    File.open(cluster_config_filename, "w") do |file|
+      configurations = Configurations.new
+      file.write(configurations.web_deployment_config(application_name: @application_name, image: docker_image_name))
+      file.write(configurations.web_service_config(application_name: @application_name))
+      file.write(configurations.db_deployment_config(application_name: @application_name))
+      file.write(configurations.db_service_config(application_name: @application_name))
+    end
     cluster_config_filename
   end
 

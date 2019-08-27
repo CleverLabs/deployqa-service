@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    connection_pool (2.2.2)
     docker-api (1.34.2)
       excon (>= 0.47.0)
       multi_json
@@ -18,6 +19,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (2.1.1)
     http_parser.rb (0.6.0)
+    ice_nine (0.11.2)
     kubeclient (4.4.0)
       http (~> 3.0)
       recursive-open-struct (~> 1.0, >= 1.0.4)
@@ -33,10 +35,16 @@ GEM
     rack-protection (2.0.5)
       rack
     recursive-open-struct (1.1.0)
+    redis (4.1.2)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    sidekiq (5.2.7)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack (>= 1.5.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
     sinatra (2.0.5)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -52,7 +60,9 @@ PLATFORMS
 
 DEPENDENCIES
   docker-api
+  ice_nine
   kubeclient
+  sidekiq
   sinatra
 
 RUBY VERSION
