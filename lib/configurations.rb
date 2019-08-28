@@ -127,8 +127,9 @@ class Configurations
     config.fetch("metadata").fetch("labels")["app"] = application_name
     config.fetch("spec").fetch("containers")[0]["name"] = application_name
     config.fetch("spec").fetch("containers")[0]["image"] = image
-    config.fetch("spec").fetch("containers")[0]["args"] = "bundle exec rails s production -p 80 -b 0.0.0.0".split
+    config.fetch("spec").fetch("containers")[0]["args"] = "bundle exec rails s -p 80 -b 0.0.0.0".split
     config.fetch("spec").fetch("containers")[0]["env"] = [
+      { "name" => "RAILS_ENV", "value" => "production" },
       { "name" => "DB_HOST", "value" => "postgres" },
       { "name" => "DB_NAME", "value" => "deployqa" },
       { "name" => "DB_USERNAME", "value" => "user" },
