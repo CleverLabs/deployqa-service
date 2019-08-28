@@ -131,6 +131,7 @@ class Configurations
     config.fetch("spec").fetch("containers")[0]["env"] = [
       { "name" => "RAILS_ENV", "value" => "production" },
       { "name" => "SECRET_KEY_BASE", "value" => "d01cc0d6-f96c-4c34-9411-f28e54a01ee5" },
+      { "name" => "RAILS_LOG_TO_STDOUT", "value" => "true" },
       { "name" => "DB_HOST", "value" => "postgres" },
       { "name" => "DB_NAME", "value" => "deployqa" },
       { "name" => "DB_USERNAME", "value" => "user" },
