@@ -130,6 +130,7 @@ class Configurations
     config.fetch("spec").fetch("containers")[0]["args"] = "bundle exec rails s -p 80 -b 0.0.0.0".split
     config.fetch("spec").fetch("containers")[0]["env"] = [
       { "name" => "RAILS_ENV", "value" => "production" },
+      { "name" => "SECRET_KEY_BASE", "value" => "d01cc0d6-f96c-4c34-9411-f28e54a01ee5" },
       { "name" => "DB_HOST", "value" => "postgres" },
       { "name" => "DB_NAME", "value" => "deployqa" },
       { "name" => "DB_USERNAME", "value" => "user" },
