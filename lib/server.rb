@@ -5,6 +5,7 @@ require "sinatra/json"
 require_relative "./server_action_worker"
 require_relative "./addons/factory"
 require_relative "./git_wrapper"
+require_relative "./docker_image_wrapper"
 
 set :environment, :production
 set :bind, "0.0.0.0"
