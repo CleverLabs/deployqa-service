@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "sinatra"
+require "sinatra/json"
 require_relative "./server_action_worker"
 require_relative "./addons/factory"
 require_relative "./git_wrapper"
@@ -16,12 +17,12 @@ end
 
 post "/application/:application_name" do
   ServerActionWorker.perform_async(ServerCreator, params[:application_name])
-  { status: "Ok" }
+  json status: "Ok"
 end
 
 delete "/application/:application_name" do
   ServerActionWorker.perform_async(ServerDeletor, params[:application_name])
-  { status: "Ok" }
+  json status: "Ok"
 end
 
 post "/addons/:addon_name" do
@@ -30,16 +31,16 @@ end
 
 post "/builds/:application_name/clone_code" do
   GitWrapper.clone_by_uri(params[:application_name], params[:repo_path], params[:repo_uri])
-  { status: "Ok" }
+  json status: "Ok"
 end
 
 post "/builds/:application_name/build" do
   DockerImageWrapper.new(params[:application_name], params[:repo_path]).build
-  { status: "Ok" }
+  json status: "Ok"
 end
 
 post "/builds/:application_name/load_to_cluster" do
   docker_image_name = "#{params[:repo_path].split("/").join("_")}:#{params[:application_name]}"
   system("kind load docker-image #{docker_image_name} --name abc")
-  { status: "Ok" }
+  json status: "Ok"
 end
