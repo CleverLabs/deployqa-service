@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "git"
+
 class GitWrapper
   CODE_FOLDER = "/home/ubuntu/cloned_repos/"
 
