@@ -3,7 +3,7 @@
 require "git"
 
 class GitWrapper
-  CODE_FOLDER = "/home/ubuntu/cloned_repos/"
+  CODE_FOLDER = "/home/ubuntu/instances/"
 
   def self.clone_by_uri(application_name, repo_path, repo_uri)
     new(Git.clone(repo_uri, repo_path.split("/").last, path: CODE_FOLDER + application_name))

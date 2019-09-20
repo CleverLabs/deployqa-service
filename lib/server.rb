@@ -45,3 +45,8 @@ post "/builds/:application_name/load_to_cluster" do
   system("kind load docker-image #{docker_image_name} --name abc")
   json status: "Ok"
 end
+
+post "/builds/:application_name/run_vm" do
+  VM.new(params[:application_name]).run
+  json status: "Ok"
+end
