@@ -18,11 +18,12 @@ end
   end
 
   def run
-    File.open("/home/ubuntu/instances/#{@application_name}/Vagrantfile", "w") do |file|
+    workdir_path = "/home/ubuntu/instances/#{@application_name}/"
+    File.open(workdir_path + "Vagrantfile", "w") do |file|
       file.write(VAGRANTFILE % { build_target_path: "/home/ubuntu/instances/#{@application_name}/deployqa", image_tag: "deployqa:#{@application_name}" })
     end
 
-    TTY::Command.new.run("vagrant up") do |output, error|
+    TTY::Command.new.run("vagrant up", env: { "VAGRANT_CWD" => workdir_path }) do |output, error|
       puts(output) if output
       puts(error) if error
     end

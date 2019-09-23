@@ -6,11 +6,12 @@ require_relative "./server_action_worker"
 require_relative "./addons/factory"
 require_relative "./git_wrapper"
 require_relative "./docker_image_wrapper"
+require_relative "./vm"
 
 set :environment, :production
 set :bind, "0.0.0.0"
 set :port, 8100
-set :server_settings, RequestTimeout: 120
+set :server_settings, RequestTimeout: 1200
 
 get "/application/:application_name/status" do
   "Hello world!"
