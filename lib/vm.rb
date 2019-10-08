@@ -6,9 +6,10 @@ class VM
   VAGRANTFILE = %{
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
+  config.vm.synced_folder "%{code_path}", "/instance_code"
 
   config.vm.provision "docker" do |docker|
-    docker.build_image "%{build_target_path} -t %{image_tag}"
+    docker.build_image "/instance_code/ -t %{image_tag}"
   end
 end
 }
@@ -20,7 +21,7 @@ end
   def run
     workdir_path = "/root/instances/#{@application_name}/"
     File.open(workdir_path + "Vagrantfile", "w") do |file|
-      file.write(VAGRANTFILE % { build_target_path: "/root/instances/#{@application_name}/deployqa", image_tag: "deployqa:#{@application_name}" })
+      file.write(VAGRANTFILE % { code_path: "/root/instances/#{@application_name}/deployqa", image_tag: "deployqa:#{@application_name}" })
     end
 
     TTY::Command.new.run("vagrant up", env: { "VAGRANT_CWD" => workdir_path }) do |output, error|
