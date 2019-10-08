@@ -6,7 +6,7 @@ class DockerImageWrapper
   def initialize(application_name, repo_full_name)
     @application_name = application_name
     @image_name = repo_full_name.split("/").join("_")
-    @repo_path = "/home/ubuntu/instances/#{application_name}/#{repo_full_name.split("/").last}"
+    @repo_path = "/root/instances/#{application_name}/#{repo_full_name.split("/").last}"
   end
 
   def build

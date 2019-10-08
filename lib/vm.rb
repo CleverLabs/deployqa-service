@@ -18,9 +18,9 @@ end
   end
 
   def run
-    workdir_path = "/home/ubuntu/instances/#{@application_name}/"
+    workdir_path = "/root/instances/#{@application_name}/"
     File.open(workdir_path + "Vagrantfile", "w") do |file|
-      file.write(VAGRANTFILE % { build_target_path: "/home/ubuntu/instances/#{@application_name}/deployqa", image_tag: "deployqa:#{@application_name}" })
+      file.write(VAGRANTFILE % { build_target_path: "/root/instances/#{@application_name}/deployqa", image_tag: "deployqa:#{@application_name}" })
     end
 
     TTY::Command.new.run("vagrant up", env: { "VAGRANT_CWD" => workdir_path }) do |output, error|
