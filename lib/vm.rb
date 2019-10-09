@@ -7,6 +7,9 @@ class VM
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
   config.vm.synced_folder "%{code_path}", "/instance_code"
+  config.vm.provider "virtualbox" do |v|
+    v.linked_clone = true
+  end
 
   config.vm.provision "docker" do |docker|
     docker.build_image "/instance_code/ -t %{image_tag}"
